@@ -27,6 +27,23 @@ div#header {
     height: 80px;
 }
 
+div#header>div {
+    font-size: 20px;
+    font-weight: normal;
+    text-transform: uppercase;
+    white-space: nowrap;
+    min-width: 150px;
+    float: left;
+    padding: 15px;
+    margin: 0px 0 0px 0;
+    border: 1px solid #999;
+    color: #fff;
+    background-color: rgb(243, 229, 165);
+    box-shadow: -1px 2px 3px #ccc;
+    text-align: right;
+    cursor: pointer;
+}
+
 div#col_left {
     float: left;
     width: 340px;

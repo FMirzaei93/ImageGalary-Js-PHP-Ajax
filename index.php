@@ -21,6 +21,9 @@
     <div id="page">
         <div id="header">
             <h1>Ajax</h1>
+
+            <div>Upload</div>
+
         </div>  
         <div id="col_left">
         

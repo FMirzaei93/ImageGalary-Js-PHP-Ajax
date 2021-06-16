@@ -22,11 +22,9 @@ $(document).ready(function() {
 
 
 
-    //----------------- Monitoring the Images Directory For changes -------
+    //----------------- Upload button for monitoring the Images directory and adding the new ones -------
 
-
-    setInterval(function() {
-
+    $('div#header > div').click(function() {
         $.ajax({
             url: "./images.factory.php",
             type: "GET",
@@ -48,11 +46,7 @@ $(document).ready(function() {
                 }
             }
         });
-
-    }, 2000);
-
-
-
+    });
 
     // ---------------- Clicking on each Cross --------------------------------
 
