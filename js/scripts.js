@@ -71,7 +71,7 @@ $(document).ready(function() {
             let img_src = $(el).find('div.contentgalery').find('img').attr('src');
             if (img_src == src) {
                 $(el).remove();
-
+                // removin an item by value from an array
                 images_urls.splice($.inArray(src, images_urls), 1);
             }
 
