@@ -65,11 +65,15 @@ $(document).ready(function() {
 
     // ---------------- Function for applying removed image (from Directory) in user's browser ------------------
 
-    function deleteSelectedImageElement(element, index) {
+    function deleteSelectedImageElement(src) {
 
-        $(element).remove();
-        images_urls.splice(index, 1);
-        //it deletes only one element from index on..
+        images_containers.each(function(i, el) {
+
+            let img_src = $(el).find('div.contentgalery').find('img').attr('src');
+            if (img_src == src) $(el).remove();
+
+        });
+
         images_containers = $('div.imggalery');
 
     }
@@ -105,32 +109,61 @@ $(document).ready(function() {
 
     //------------------------------- Clicking on CrossButton  ----------------------------
 
+    // function crossButtonClick(target) {
+
+    //     var deleteFile = confirm(warning_alert);
+    //     if (deleteFile == true) {
+
+    //         var clicked_cross_index = target.parent().parent().index();
+    //         var clicked_imageFile = images_urls[clicked_cross_index];
+
+
+    //         $.ajax({
+    //             url: "./images.factory.php",
+    //             type: "POST",
+    //             data: {
+    //                 function_name: 'deleteImageFunc',
+    //                 imageFile: clicked_imageFile
+    //             },
+    //             dataType: "JSON",
+    //             success: function(response, status) {
+
+    //                 if (response == 1) {
+    //                     deleteSelectedImageElement(images_containers[clicked_cross_index], clicked_cross_index);
+    //                 }
+    //             }
+    //         });
+
+    //     }
+    // }
+
+
     function crossButtonClick(target) {
 
-        var deleteFile = confirm(warning_alert);
-        if (deleteFile == true) {
+        // var deleteFile = confirm(warning_alert);
+        // if (deleteFile == true) {
 
-            var clicked_cross_index = target.parent().parent().index();
-            var clicked_imageFile = images_urls[clicked_cross_index];
+        let clicked_image_src = target.parent().prev().find('img').attr('src');
 
+        $.ajax({
+            url: "./images.factory.php",
+            type: "POST",
+            data: {
+                function_name: 'deleteImageFunc',
+                imageFile: clicked_image_src
+            },
+            dataType: "JSON",
+            success: function(response, status) {
 
-            $.ajax({
-                url: "./images.factory.php",
-                type: "POST",
-                data: {
-                    function_name: 'deleteImageFunc',
-                    imageFile: clicked_imageFile
-                },
-                dataType: "JSON",
-                success: function(response, status) {
-
-                    if (response == 1) {
-                        deleteSelectedImageElement(images_containers[clicked_cross_index], clicked_cross_index);
-                    }
+                if (response == 1) {
+                    deleteSelectedImageElement(clicked_image_src);
                 }
-            });
+            }
+        });
 
-        }
+
+
+        // }
     }
 
 });
