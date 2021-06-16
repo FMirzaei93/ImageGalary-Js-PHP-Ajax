@@ -38,12 +38,11 @@ $(document).ready(function() {
 
                 if (current_images_urls.length > images_urls.length) {
 
-                    var difference = $(current_images_urls).not(images_urls).get();
+                    var difference_array = $(current_images_urls).not(images_urls).get();
 
-                    $.each(difference, function(index, value) {
+                    $.each(difference_array, function(index, value) {
 
-                        var i = current_images_urls.indexOf(difference[index]);
-                        makingChangesOfAddingNewImage(difference[index], i);
+                        makingChangesOfAddingNewImage(value);
                     });
 
                 }
@@ -70,7 +69,11 @@ $(document).ready(function() {
         images_containers.each(function(i, el) {
 
             let img_src = $(el).find('div.contentgalery').find('img').attr('src');
-            if (img_src == src) $(el).remove();
+            if (img_src == src) {
+                $(el).remove();
+
+                images_urls.splice($.inArray(src, images_urls), 1);
+            }
 
         });
 
@@ -81,23 +84,16 @@ $(document).ready(function() {
 
     // ---------------- Function for adding new image (from Directory) into user's browser ------------------
 
-    function makingChangesOfAddingNewImage(difference, index) {
+    function makingChangesOfAddingNewImage(src) {
 
-        images_urls.splice(index, 0, difference);
-        //it deletes nothing(zero element) and add "difference"
+
         var new_image_container = document.createElement('div');
         $(new_image_container).addClass("imggalery");
-        new_image_container.innerHTML = `<div class="contentgalery"><img style="margin:5px 5px;" src="${difference}" width="160" height="100"></div><div class="btngalery"><img style="cursor:pointer;" src="images/cross.gif"></div>`;
+        new_image_container.innerHTML = `<div class="contentgalery"><img style="margin:5px 5px;" src="${src}" width="160" height="100"></div><div class="btngalery"><img style="cursor:pointer;" src="images/cross.gif"></div>`;
+        var images_zone = $('div#images_zone');
+        images_zone.append(new_image_container);
 
-        if (index == 0) {
-            var images_zone = $('div#images_zone');
-            images_zone.prepend(new_image_container)
-
-        } else {
-            var previous_div = $(`div#images_zone>div:nth-child(${index})`);
-            $(new_image_container).insertAfter($(previous_div));
-        }
-
+        images_urls.push(src);
         images_containers = $('div.imggalery');
 
 
@@ -107,63 +103,33 @@ $(document).ready(function() {
 
     }
 
-    //------------------------------- Clicking on CrossButton  ----------------------------
-
-    // function crossButtonClick(target) {
-
-    //     var deleteFile = confirm(warning_alert);
-    //     if (deleteFile == true) {
-
-    //         var clicked_cross_index = target.parent().parent().index();
-    //         var clicked_imageFile = images_urls[clicked_cross_index];
-
-
-    //         $.ajax({
-    //             url: "./images.factory.php",
-    //             type: "POST",
-    //             data: {
-    //                 function_name: 'deleteImageFunc',
-    //                 imageFile: clicked_imageFile
-    //             },
-    //             dataType: "JSON",
-    //             success: function(response, status) {
-
-    //                 if (response == 1) {
-    //                     deleteSelectedImageElement(images_containers[clicked_cross_index], clicked_cross_index);
-    //                 }
-    //             }
-    //         });
-
-    //     }
-    // }
+    //------------------------------- Clicking on CrossButton  ---------------------------
 
 
     function crossButtonClick(target) {
 
-        // var deleteFile = confirm(warning_alert);
-        // if (deleteFile == true) {
+        var deleteFile = confirm(warning_alert);
+        if (deleteFile == true) {
 
-        let clicked_image_src = target.parent().prev().find('img').attr('src');
+            let clicked_image_src = target.parent().prev().find('img').attr('src');
 
-        $.ajax({
-            url: "./images.factory.php",
-            type: "POST",
-            data: {
-                function_name: 'deleteImageFunc',
-                imageFile: clicked_image_src
-            },
-            dataType: "JSON",
-            success: function(response, status) {
+            $.ajax({
+                url: "./images.factory.php",
+                type: "POST",
+                data: {
+                    function_name: 'deleteImageFunc',
+                    imageFile: clicked_image_src
+                },
+                dataType: "JSON",
+                success: function(response, status) {
 
-                if (response == 1) {
-                    deleteSelectedImageElement(clicked_image_src);
+                    if (response == 1) {
+                        deleteSelectedImageElement(clicked_image_src);
+                    }
                 }
-            }
-        });
+            });
 
-
-
-        // }
+        }
     }
 
 });
