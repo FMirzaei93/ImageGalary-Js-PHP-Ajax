@@ -18,6 +18,7 @@ $(document).ready(function() {
         success: function(response, status) {
 
             images_urls = response;
+
         }
     });
 
@@ -44,16 +45,29 @@ $(document).ready(function() {
 
                 current_images_urls = response;
 
-                if (current_images_urls.length > images_urls.length) {
+                var difference_array = [];
+                difference_array = $(current_images_urls).not(images_urls).get();
 
-                    var difference_array = $(current_images_urls).not(images_urls).get();
+                console.log(difference_array);
+                if (current_images_urls.length > images_urls.length) {
+                    console.log('current is greater');
+
+                    //var difference_array = $(current_images_urls).not(images_urls).get();
 
                     $.each(difference_array, function(index, value) {
 
-                        updatingThePageAfterUploading(value);
+                        updateThePageAfterUploading(value);
                     });
 
                 }
+                // else {
+                //     $.each(difference_array, function(index, value) {
+                //         console.log('current is less');
+
+
+                //         deleteSelectedImageElement(value);
+                //     });
+                // }
             }
         });
 
@@ -61,7 +75,7 @@ $(document).ready(function() {
 
     // ---------------- Function for adding new image (from Directory) into user's browser ------------------
 
-    function updatingThePageAfterUploading(src) {
+    function updateThePageAfterUploading(src) {
 
 
         var new_image_container = document.createElement('div');
@@ -173,14 +187,16 @@ $(document).ready(function() {
         $(this).css('background', '#fff');
 
 
-        var image = e.originalEvent.dataTransfer.files;
-        createFormData(image);
+        var selectedImages = e.originalEvent.dataTransfer.files;
+        createFormData(selectedImages);
     });
 
-    function createFormData(image) {
+    function createFormData(images) {
         var formImage = new FormData();
-        formImage.append('userImage', image[0]);
-        uploadFormData(formImage);
+        $.each(images, function(i, v) {
+            formImage.append('userImage', images[i]);
+            uploadFormData(formImage);
+        });
     }
 
     function uploadFormData(formData) {
@@ -193,11 +209,7 @@ $(document).ready(function() {
             processData: false,
             success: function(data) {
 
-                console.log(data);
-
-
                 uploadingNewImages();
-
 
             }
         })
