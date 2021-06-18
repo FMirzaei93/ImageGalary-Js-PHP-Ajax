@@ -1,60 +1,59 @@
-   $(document).ready(function() {
-       // preventing page from redirecting
-       $("html").on("dragover", function(e) {
-           e.preventDefault();
-           e.stopPropagation();
-       });
-       $("html").on("drop", function(e) {
-           e.preventDefault();
-           e.stopPropagation();
-       });
+// preventing page from redirecting
+$("html").on("dragover", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+});
+$("html").on("drop", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+});
 
-       // Drag enter
-       $('div#page').on('dragenter', function(e) {
-           e.stopPropagation();
-           e.preventDefault();
-           $(this).css('background', '#BBD5B8');
+// Drag enter
+$('div#page').on('dragenter', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    $(this).css('background', '#e0e0e0b0');
 
+});
 
-       });
+// Drag over
+$('div#page').on('dragover', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+});
 
-       // Drag over
-       $('div#page').on('dragover', function(e) {
-           e.stopPropagation();
-           e.preventDefault();
-           // $("h1").text("Drop");
-       });
+// Drop
+$('div#page').on('drop', function(e) {
 
-       // Drop
-       $('div#page').on('drop', function(e) {
-
-           e.stopPropagation();
-           e.preventDefault();
-           $(this).css('background', '#D8F9D3');
+    e.stopPropagation();
+    e.preventDefault();
+    $(this).css('background', '#fff');
 
 
-           var image = e.originalEvent.dataTransfer.files;
-           createFormData(image);
-       });
+    var selectedImages = e.originalEvent.dataTransfer.files;
+    createFormData(selectedImages);
+});
 
-       function createFormData(image) {
-           var formImage = new FormData();
-           formImage.append('userImage', image[0]);
-           uploadFormData(formImage);
-       }
+function createFormData(images) {
+    var formImage = new FormData();
+    $.each(images, function(i, v) {
+        formImage.append('userImage', images[i]);
+        uploadFormData(formImage);
+    });
+}
 
-       function uploadFormData(formData) {
-           $.ajax({
-               url: "upload.php",
-               type: "POST",
-               data: formData,
-               contentType: false,
-               cache: false,
-               processData: false,
-               success: function(data) {
-                   // $('#drop-area').append(data);
-                   console.log(data);
-               }
-           })
-       }
-   });
+function uploadFormData(formData) {
+    $.ajax({
+        url: "upload.php",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data) {
+
+            uploadingNewImages();
+
+        }
+    })
+}
