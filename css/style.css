@@ -19,7 +19,6 @@ div#page {
     text-align: left;
     box-shadow: 1px 1px 6px #aaa;
     background-color: #fff;
-    padding-bottom: 30px;
 }
 
 div#header {
@@ -44,19 +43,11 @@ div#header>div {
     cursor: pointer;
 }
 
-div#col_left {
-    float: left;
-    width: 340px;
-    min-height: 300px;
-    margin: 0 0 0 15px;
-    border-right: solid 1px #ccc;
-}
-
 div#col_right {
-    float: right;
     width: 614px;
     min-height: 300px;
-    margin: 0 15px;
+    margin: 0 auto 20px auto;
+    overflow-y: auto;
 }
 
 div#footer {

@@ -1,26 +1,13 @@
 <?php
-
-/* Getting file name */
-$filename = $_FILES['file']['name'];
-
-/* Getting File size */
-$filesize = $_FILES['file']['size'];
-
-/* Location */
-$location = ".images/upload/".$filename;
-
-$return_arr = array();
-
-/* Upload file */
-if(move_uploaded_file($_FILES['file']['tmp_name'],$location)){
-    $src = "default.jpg";
-
-    // checking file is image or not
-    if(is_array(getimagesize($location))){
-        $src = $location;
+if (is_array($_FILES)) {
+    if (is_uploaded_file($_FILES['userImage']['tmp_name'])) {
+        $sourcePath = $_FILES['userImage']['tmp_name'];
+        $targetPath = "./images/upload/".$_FILES['userImage']['name'];
+        if (move_uploaded_file($sourcePath, $targetPath)) {
+            ?>
+<img src="<?php echo $targetPath; ?>" width="100px" height="100px" hspace=15 />
+<?php
+        }
     }
-    $return_arr = array("name" => $filename,"size" => $filesize, "src"=> $src);
 }
-
-echo json_encode($return_arr);
-
+?>
