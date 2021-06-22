@@ -48,11 +48,7 @@ $(document).ready(function() {
                 var difference_array = [];
                 difference_array = $(current_images_urls).not(images_urls).get();
 
-                console.log(difference_array);
                 if (current_images_urls.length > images_urls.length) {
-                    console.log('current is greater');
-
-                    //var difference_array = $(current_images_urls).not(images_urls).get();
 
                     $.each(difference_array, function(index, value) {
 
@@ -155,49 +151,57 @@ $(document).ready(function() {
 
     //-------------------------------------------
 
-    // preventing page from redirecting
-    $("html").on("dragover", function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    });
-    $("html").on("drop", function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    });
+    // // preventing page from redirecting
+    // $("html").on("dragover", function(e) {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    // });
+    // $("html").on("drop", function(e) {
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    // });
 
-    // Drag enter
-    $('div#page').on('dragenter', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).css('background', '#e0e0e0b0');
+    // // Drag enter
+    // $('div#page').on('dragenter', function(e) {
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    //     $(this).css('background', '#aaaaaa50');
 
-    });
+    // });
 
-    // Drag over
-    $('div#page').on('dragover', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-    });
-
-    // Drop
-    $('div#page').on('drop', function(e) {
-
-        e.stopPropagation();
-        e.preventDefault();
-        $(this).css('background', '#fff');
+    // // Drag over
+    // $('div#page').on('dragover', function(e) {
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    // });
 
 
-        var selectedImages = e.originalEvent.dataTransfer.files;
-        createFormData(selectedImages);
-    });
+    // // Drop
+    // $('div#page').on('drop', function(e) {
 
-    function createFormData(images) {
-        var formImage = new FormData();
-        $.each(images, function(i, v) {
-            formImage.append('userImage', images[i]);
-            uploadFormData(formImage);
-        });
-    }
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    //     $(this).css('background', '#fff');
+
+
+    //     var selectedImages = e.originalEvent.dataTransfer.files;
+    //     createFormData(selectedImages);
+    // });
+
+    // function createFormData(images) {
+    //     var fd = new FormData();
+    //     // The FormData interface provides a way to easily construct a set of key/value pairs representing form fields and their values, which can then be easily sent using the XMLHttpRequest.send() method.
+    //     $.each(images, function(i, val) {
+    //         fd.append('userImage[]', val);
+
+    //         //For sending them one by one:
+    //         //fd.append('userImage', val);
+    //         //uploadFormData(fd);
+
+    //     });
+
+    //     uploadFormData(fd);
+    // }
 
     function uploadFormData(formData) {
         $.ajax({
@@ -207,7 +211,7 @@ $(document).ready(function() {
             contentType: false,
             cache: false,
             processData: false,
-            success: function(data) {
+            success: function(data, status) {
 
                 uploadingNewImages();
 
