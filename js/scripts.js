@@ -56,14 +56,6 @@ $(document).ready(function() {
                     });
 
                 }
-                // else {
-                //     $.each(difference_array, function(index, value) {
-                //         console.log('current is less');
-
-
-                //         deleteSelectedImageElement(value);
-                //     });
-                // }
             }
         });
 
@@ -202,21 +194,5 @@ $(document).ready(function() {
 
     //     uploadFormData(fd);
     // }
-
-    function uploadFormData(formData) {
-        $.ajax({
-            url: "upload.php",
-            type: "POST",
-            data: formData,
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function(data, status) {
-
-                uploadingNewImages();
-
-            }
-        })
-    }
 
 });
