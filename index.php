@@ -32,7 +32,7 @@
 
         <div id="images_zone">
             <?php
-                 $images =  glob('images/upload/*');
+                 $images =  glob('images/upload/*jpg');
                  if (isset($images)) {
                      //isset: checks if the variable ($images) has value and is not null.
 
