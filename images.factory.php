@@ -29,7 +29,7 @@ if (isset($_POST['function_name'])) {
 
 function imagesFindAll()
 {
-    $imagesFiles = glob('images/upload/*');
+    $imagesFiles = glob('images/upload/*jpg');
     echo json_encode($imagesFiles);
     exit;
 }
