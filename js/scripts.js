@@ -1,10 +1,14 @@
+var warning_alert = "Do you really want to Delete this item?";
+var cross_signs = null;
+var images_urls = [];
+var current_images_urls = [];
+var images_containers = null;
+
+
 $(document).ready(function() {
 
-    var warning_alert = "Do you really want to Delete this item?";
-    var cross_signs = $('div.imggalery div.btngalery img');
-    var images_urls = [];
-    var current_images_urls = [];
-    var images_containers = $('div.imggalery');
+    cross_signs = $('div.imggalery div.btngalery img');
+    images_containers = $('div.imggalery');
 
 
     // ---------------- Retrieving Images From Images Directory -------------
@@ -17,36 +21,18 @@ $(document).ready(function() {
         success: function(response, status) {
 
             images_urls = response;
+
         }
     });
 
 
-
-    //----------------- Upload button for monitoring the Images directory and adding the new ones -------
+    // ---------------- Clicking on upload button --------------------------------
 
     $('div#header > div').click(function() {
-        $.ajax({
-            url: "./images.factory.php",
-            type: "GET",
-            data: { function_name: 'imagesFindAllFunc' },
-            dataType: "JSON",
-            success: function(response, status) {
 
-                current_images_urls = response;
-
-                if (current_images_urls.length > images_urls.length) {
-
-                    var difference_array = $(current_images_urls).not(images_urls).get();
-
-                    $.each(difference_array, function(index, value) {
-
-                        makingChangesOfAddingNewImage(value);
-                    });
-
-                }
-            }
-        });
+        uploadingNewImages();
     });
+
 
     // ---------------- Clicking on each Cross --------------------------------
 
@@ -55,47 +41,6 @@ $(document).ready(function() {
         crossButtonClick($(event.target));
     });
 
-
-    // ---------------- Function for applying removed image (from Directory) in user's browser ------------------
-
-    function deleteSelectedImageElement(src) {
-
-        images_containers.each(function(i, el) {
-
-            let img_src = $(el).find('div.contentgalery').find('img').attr('src');
-            if (img_src == src) {
-                $(el).remove();
-                // removin an item by value from an array
-                images_urls.splice($.inArray(src, images_urls), 1);
-            }
-
-        });
-
-        images_containers = $('div.imggalery');
-
-    }
-
-
-    // ---------------- Function for adding new image (from Directory) into user's browser ------------------
-
-    function makingChangesOfAddingNewImage(src) {
-
-
-        var new_image_container = document.createElement('div');
-        $(new_image_container).addClass("imggalery");
-        new_image_container.innerHTML = `<div class="contentgalery"><img style="margin:5px 5px;" src="${src}" width="160" height="100"></div><div class="btngalery"><img style="cursor:pointer;" src="images/cross.gif"></div>`;
-        var images_zone = $('div#images_zone');
-        images_zone.append(new_image_container);
-
-        images_urls.push(src);
-        images_containers = $('div.imggalery');
-
-
-        $(new_image_container).find('div.btngalery img').on("click", function(event) {
-            crossButtonClick($(event.target));
-        });
-
-    }
 
     //------------------------------- Clicking on CrossButton  ---------------------------
 
@@ -126,5 +71,77 @@ $(document).ready(function() {
         }
     }
 
+
+    // ---------------- Function for applying removed image (from Directory) in user's browser ------------------
+
+    function deleteSelectedImageElement(src) {
+
+        images_containers.each(function(i, el) {
+
+            let img_src = $(el).find('div.contentgalery').find('img').attr('src');
+            if (img_src == src) {
+                $(el).remove();
+                // removin an item by value from an array
+                images_urls.splice($.inArray(src, images_urls), 1);
+            }
+
+        });
+
+        images_containers = $('div.imggalery');
+
+    }
+
 });
-//
+
+// ---------------- Function for adding new image (from Directory) into user's browser ------------------
+
+function updateThePageAfterUploading(src) {
+
+
+    var new_image_container = document.createElement('div');
+    $(new_image_container).addClass("imggalery");
+    new_image_container.innerHTML = `<div class="contentgalery"><img style="margin:5px 5px;" src="${src}" width="160" height="100"></div><div class="btngalery"><img style="cursor:pointer;" src="images/cross.gif"></div>`;
+    var images_zone = $('div#images_zone');
+    images_zone.append(new_image_container);
+
+    images_urls.push(src);
+    images_containers = $('div.imggalery');
+
+
+    $(new_image_container).find('div.btngalery img').on("click", function(event) {
+        crossButtonClick($(event.target));
+    });
+
+}
+
+
+
+
+//----------------- Monitoring the Images directory and adding the new ones -------
+
+function uploadingNewImages() {
+
+    $.ajax({
+        url: "./images.factory.php",
+        type: "GET",
+        data: { function_name: 'imagesFindAllFunc' },
+        dataType: "JSON",
+        success: function(response, status) {
+
+            current_images_urls = response;
+
+            var difference_array = [];
+            difference_array = $(current_images_urls).not(images_urls).get();
+
+            if (current_images_urls.length > images_urls.length) {
+
+                $.each(difference_array, function(index, value) {
+
+                    updateThePageAfterUploading(value);
+                });
+
+            }
+        }
+    });
+
+}
