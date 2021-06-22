@@ -51,4 +51,21 @@
          });
          uploadFormData(fd);
      }
+
+
+     function uploadFormData(formData) {
+         $.ajax({
+             url: "upload.php",
+             type: "POST",
+             data: formData,
+             contentType: false,
+             cache: false,
+             processData: false,
+             success: function(data, status) {
+
+                 uploadingNewImages();
+
+             }
+         })
+     }
  });
