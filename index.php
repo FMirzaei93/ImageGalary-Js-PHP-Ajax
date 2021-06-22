@@ -15,7 +15,7 @@
     <!-- <script src="js/jquery-2.2.1.min.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="js/scripts.js"></script>
-    <!-- <script src="js/drag_and_drop.js"></script> -->
+    <script src="js/drag_and_drop.js"></script>
 
 
 </head>
@@ -30,39 +30,36 @@
 
         </div>
 
-        <div id="col_right">
-
-
-            <div id="images_zone">
-                <?php
+        <div id="images_zone">
+            <?php
                  $images =  glob('images/upload/*');
                  if (isset($images)) {
                      //isset: checks if the variable ($images) has value and is not null.
 
                      foreach ($images as $imageFile) {
                          ?>
-                <div class="imggalery">
-                    <div class="contentgalery">
-                        <?php
+            <div class="imggalery">
+                <div class="contentgalery">
+                    <?php
                         if (file_exists($imageFile)) {
                             //file_exists: checks if the file or the directory exists.?>
-                        <img style="margin:5px 5px;" src="<?php echo $imageFile; ?>" width="160" height="100" />
-                        <!-- echo display the value -->
+                    <img style="margin:5px 5px;" src="<?php echo $imageFile; ?>" width="160" height="100" />
+                    <!-- echo display the value -->
 
-                        <?php
+                    <?php
                         } else {
                             echo 'Aucune image !';
                         } ?>
-                    </div>
-                    <div class="btngalery">
+                </div>
+                <div class="btngalery">
 
-                        <img style="cursor:pointer;" src="images/cross.gif" /></a>
-
-                    </div>
-
+                    <img style="cursor:pointer;" src="images/cross.gif" /></a>
 
                 </div>
-                <?php
+
+
+            </div>
+            <?php
                      }
                  } else {
                      echo 'Aucune image';
@@ -70,10 +67,8 @@
                  ?>
 
 
-            </div>
-
-
         </div>
+
 
     </div>
 
